@@ -33,7 +33,7 @@ public class MainViewModel {
 
     public void startGame(){
         if(this.isPlayable){
-            UI.show(new GameView());
+            UI.show(new GameView(new GameViewModel(width.get() * height.get())));
         }else{
             this.feedback.set("Requirements for start aren't met.");
         }

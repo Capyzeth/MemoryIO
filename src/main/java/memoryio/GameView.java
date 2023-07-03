@@ -1,14 +1,18 @@
 package memoryio;
+import swingtree.UI;
 import swingtree.style.Layer;
 
+import javax.swing.*;
 import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 import static swingtree.UI.*;
 
 public class GameView extends Panel {
 
-    public GameView(){
-        of(this).withLayout("fill, wrap 1").withPrefSize(500,500)
+    public GameView(GameViewModel vm){
+        of(this).withLayout("fill, wrap 1").withPrefSize(1000,1000)
         .add(
             panel("fill")
             .add(label("MemoryIO"))
@@ -28,8 +32,21 @@ public class GameView extends Panel {
                 })
             )
             .apply(p -> {
-                for(int i = 0; i < 5; i++){
-                    p.add(label("index: "+i));
+                List<TileViewModel> images = vm.getTileViewModels();
+                for(int i = 0; i < images.size(); i++){
+                    int finalI = i;
+                    var tileViewModel = images.get(i);
+                    p.add(
+                        label(UI.icon(tileViewModel.getSource())).withRepaintIf(tileViewModel.getRepaintEvent())
+                        .onMouseClick(it -> vm.clickedTile(finalI))
+                        .withStyle(it -> it.painter(Layer.FOREGROUND, g -> {
+                            boolean isVisible = images.get(finalI).getIsVisible();
+                            if(!isVisible){
+                                g.setColor(Color.darkGray);
+                                g.fillRoundRect(0,0,it.component().getWidth(),it.component().getHeight(),20,20);
+                            }
+                        }))
+                    );
                 }
             })
         );
