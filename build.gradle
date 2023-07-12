@@ -13,7 +13,7 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-    implementation group: 'io.github.globaltcad', name: 'swing-tree', version:'a0d4e52'
+    implementation group: 'io.github.globaltcad', name: 'swing-tree', version:'2c7f3c3'
 }
 
 test {
