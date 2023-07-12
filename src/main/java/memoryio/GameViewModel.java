@@ -56,7 +56,7 @@ public class GameViewModel {
             }else{
                 try {
                     madeMistake.set(true);
-                    Thread.sleep(3500);
+                    Thread.sleep(500);
                     madeMistake.set(false);
                 } catch (InterruptedException e) {
                     e.printStackTrace();

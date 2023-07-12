@@ -6,10 +6,10 @@ import swingtree.UI;
 
 public class Main {
     public static void main(String... args){
-        SwingTreeContext.get().setEventProcessor(EventProcessor.DECOUPLED);
-        UI.show( f ->
-                UI.use(EventProcessor.DECOUPLED, ()->new MainView(new MainViewModel()))
-        );
+        UI.show( f -> {
+            SwingTreeContext.get().setEventProcessor(EventProcessor.DECOUPLED);
+            return UI.use(EventProcessor.DECOUPLED, () -> new MainView(new MainViewModel()));
+        });
         EventProcessor.DECOUPLED.join();
     }
 }
