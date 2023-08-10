@@ -1,33 +1,57 @@
 package memoryio;
 import swingtree.UI;
-import swingtree.style.Layer;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.Random;
 
 import static swingtree.UI.*;
 
 public class GameView extends Panel {
 
     public GameView(GameViewModel vm){
-        of(this).withLayout("fill, wrap 1").withPrefSize((90 * vm.getWidth() + 120),(90 * vm.getHeight() + 120))
-        .add(
+        of(this).withLayout("fill, wrap 1").withPrefSize((90 * vm.getWidth() + 120),(90 * vm.getHeight() + 140))
+        .withBackground(Color.LIGHT_GRAY)
+        .add("center",
             panel("fill")
-            .add(label("MemoryIO"))
-            .add(label("Level"))
-            .add(label("Score"))
-            .add(label("Tries"))
+            .withStyle(it -> it
+                .borderRadius(10)
+                .border(0,0,2,0, Color.GRAY)
+                .padding(0,7,0,7)
+            )
+            .add(
+                html(vm.getScore().viewAsString( s -> "<p>Your Score: &nbsp<b style=\"font-size:16\">" + s + "/" + vm.getMaxScore() + "</b></p>" ))
+                .withStyle(it -> it.margin(0,10,0,0))
+            )
+            .add(
+                html(vm.getTries().viewAsString( s -> "<p>Number of Tries: &nbsp<b style=\"font-size:16\">" + s + "</b></p>" ))
+            )
         )
         .add("center",
-            panel("center, wrap " + vm.getWidth())
+            panel("center, wrap " + vm.getWidth() + ", gap 0, ins 0")
             .withRepaintIf(vm.getMadeMistake())
             .withStyle(it -> it
-                .backgroundColor(vm.getMadeMistake().is(true) ? Color.RED : Color.GREEN )
-                .border(3, "black")
+                .backgroundColor(vm.getMadeMistake().is(true) ? Color.RED : new Color(0,150,90) )
+                .padding(3)
+                .border(2, "black")
                 .borderRadius(12)
-                .margin(0,0,50,0)
+                .margin(10,10,80,10)
+                .shadow("dark", s -> s
+                    .color(new Color(0, 0.1f, 0.2f, 0.70f))
+                    .offset(+3)
+                    .blurRadius(6)
+                    .spreadRadius(0)
+                )
+                .shadow("bright", s -> s
+                    .color(new Color(1.0f, 1.0f, 1.0f, 0.70f))
+                    .offset(-3)
+                    .blurRadius(6)
+                    .spreadRadius(0)
+                )
             )
             .apply(p -> {
+                var selectedCard = new Random(1 + vm.getTileViewModels().size()).nextInt(10)+1;
+                var cover = UI.icon("/cards/c" + selectedCard + ".png");
                 List<TileViewModel> tiles = vm.getTileViewModels();
                 for(int i = 0; i < tiles.size(); i++){
                     int finalI = i;
@@ -39,10 +63,22 @@ public class GameView extends Panel {
                             .painter(Layer.FOREGROUND, g -> {
                                 boolean isVisible = tiles.get(finalI).getIsVisible();
                                 if(!isVisible){
-                                    g.setColor(Color.darkGray);
-                                    g.fillRoundRect(0,0,it.component().getWidth(),it.component().getHeight(),20,20);
+                                    g.drawImage(cover.getImage(),0,0, it.component().getWidth(), it.component().getHeight(),null);
                                 }
                             })
+                            .margin(5)
+                            .shadow("dark", s -> s
+                                .color(new Color(0, 0.1f, 0.2f, 0.70f))
+                                .offset(+1)
+                                .blurRadius(2)
+                                .spreadRadius(0)
+                            )
+                            .shadow("bright", s -> s
+                                .color(new Color(1.0f, 1.0f, 1.0f, 0.70f))
+                                .offset(-1)
+                                .blurRadius(2)
+                                .spreadRadius(0)
+                            )
                         )
                     );
                 }

@@ -6,6 +6,7 @@ import java.util.*;
 
 public class GameViewModel {
     private static final int SEED = new Random().nextInt(100);
+    private static final int MAX_BUDGET = 11;
 
     private final Var<Boolean> madeMistake = Var.of(false);
     private final int width;
@@ -16,9 +17,15 @@ public class GameViewModel {
     private TileViewModel first = null;
     private TileViewModel second = null;
 
+    private final Var<Integer> score = Var.of(0);
+    private final Var<Integer> tries = Var.of(0);
+    private int scoreBudget = MAX_BUDGET;
+    private final int maxScore;
+
     public GameViewModel(int width, int height) {
         this.width = width;
         this.height = height;
+        this.maxScore = ((width * height) / 2 ) * ( scoreBudget - 1 );
         int numberOfTiles = width * height;
 
         for( int i = 0; i < numberOfTiles / 2; i++ ){
@@ -35,34 +42,38 @@ public class GameViewModel {
         return this.tileViewModels;
     }
 
-    public void clickedTile(int i){
-        if(first == null){
-            first = tileViewModels.get(i);
-            first.setVisible(true);
-            if(first.getIsSolved()){
+    public void clickedTile( int i ){
+        if ( first == null ){
+            first = tileViewModels.get( i );
+            first.setVisible( true );
+            if ( first.getIsSolved() ){
                 first = null;
                 return;
             }
-        }else if(second == null){
-            second = tileViewModels.get(i);
-            second.setVisible(true);
-            if(second.getIsSolved()){
+        }else if ( second == null && ( tileViewModels.get( i ) != first )){
+            tries.set( tries.get() + 1 );
+            scoreBudget -= 1;
+            second = tileViewModels.get( i );
+            second.setVisible( true );
+            if ( second.getIsSolved()){
                 second = null;
                 return;
             }
-            if(Objects.equals(first.getSource(), second.getSource())){
-                first.setSolved(true);
-                second.setSolved(true);
-            }else{
+            if ( Objects.equals( first.getSource(), second.getSource() )){
+                score.set( score.get() + scoreBudget );
+                scoreBudget = MAX_BUDGET;
+                first.setSolved( true );
+                second.setSolved( true );
+            } else {
                 try {
-                    madeMistake.set(true);
-                    Thread.sleep(500);
-                    madeMistake.set(false);
-                } catch (InterruptedException e) {
+                    madeMistake.set( true );
+                    Thread.sleep(500 );
+                    madeMistake.set( false );
+                } catch ( InterruptedException e ) {
                     e.printStackTrace();
                 }
-                first.setVisible(false);
-                second.setVisible(false);
+                first.setVisible( false);
+                second.setVisible( false);
             }
             first = null;
             second = null;
@@ -77,5 +88,17 @@ public class GameViewModel {
 
     public Var<Boolean> getMadeMistake() {
         return madeMistake;
+    }
+
+    public Var<Integer> getTries() {
+        return tries;
+    }
+
+    public Var<Integer> getScore() {
+        return score;
+    }
+
+    public int getMaxScore() {
+        return maxScore;
     }
 }

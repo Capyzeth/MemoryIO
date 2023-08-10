@@ -3,6 +3,8 @@ package memoryio;
 import sprouts.Var;
 import swingtree.UI;
 
+import javax.swing.*;
+
 public class MainViewModel {
     private static final int MAX_NUMBER_OF_TILES = 24*2; //todo: read contents of the image folder and calculate accordingly
 
@@ -33,7 +35,11 @@ public class MainViewModel {
 
     public void startGame(){
         if(this.isPlayable){
-            UI.show(f-> new GameView(new GameViewModel(width.get(), height.get())));
+            UI.show(f-> {
+                f.setTitle("Memory IO - " + width.get() + "x" + height.get());
+                f.setIconImage(UI.icon("/platypussies/p1.png").getImage());
+                return new GameView(new GameViewModel(width.get(), height.get()));
+            });
         }else{
             this.feedback.set("Requirements for start aren't met.");
         }

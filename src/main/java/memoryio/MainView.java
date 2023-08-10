@@ -1,4 +1,5 @@
 package memoryio;
+import javax.swing.*;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 
@@ -7,21 +8,77 @@ import static swingtree.UI.*;
 public class MainView extends Panel{
     public MainView(MainViewModel vm){
         of(this).add(
-            panel("wrap 2").withPrefSize(300,200)
+            panel("wrap 2").withPrefSize(300,170)
             .add(
                 panel("wrap 1")
-                .withStyle(it -> it.border(3,"blue").padding(12).margin(12).borderRadius(16))
-                .add(label("Welcome to MemoryIO"))
+                .withStyle(it -> it
+                    .border(2,"black")
+                    .padding(12)
+                    .margin(12)
+                    .borderRadius(16)
+                    .shadow("dark", s -> s
+                        .color(new Color(0, 0.1f, 0.2f, 0.70f))
+                        .offset(+1)
+                        .blurRadius(2)
+                        .spreadRadius(0)
+                    )
+                    .shadow("bright", s -> s
+                        .color(new Color(1.0f, 1.0f, 1.0f, 0.70f))
+                        .offset(-1)
+                        .blurRadius(2)
+                        .spreadRadius(0)
+                    )
+                )
                 .add(
-                    panel("wrap 2")
+                    label("Welcome to MemoryIO")
+                    .withForeground(new Color(55, 20, 180))
+                    .withFontSize(14)
+                    .withTooltip("<html>MemoryIO is a memory game that utilizes AI generated pictures of platypi as" +
+                            " images. <br>Please select your desired game size below. <br> The achievable highscore" +
+                            " is dependant on the size of the game and is calculated accordingly.</html>")
+                )
+                .add( "grow",
+                    panel("wrap 2, fill", "[][grow]")
                     .add(label("Board width:"))
-                    .add(spinner(vm.getWidth()))
+                    .add("pushx, grow",
+                        spinner(vm.getWidth())
+                        .withStyle(it -> it
+                            .margin(0,0,0,25)
+                            .padding(2,2,2,2)
+                        )
+                    )
                     .add(label("Board height:"))
-                    .add(spinner(vm.getHeight()))
+                    .add("pushx, grow",
+                        spinner(vm.getHeight())
+                        .withStyle(it -> it
+                            .margin(0,0,0,25)
+                            .padding(2,2,2,2)
+                        )
+                    )
                 )
             )
             .add(
                 button("Play")
+                .withStyle(it -> it
+                    .border(1, Color.BLACK)
+                    .padding(6)
+                    .margin(3)
+                    .borderRadius(16)
+                    .backgroundColor(determineBackgroundColorFor(it.component()))
+                    .fontColor(it.component().getModel().isRollover() ? Color.BLACK : Color.WHITE)
+                    .shadow("dark", s -> s
+                        .color(new Color(0, 0.1f, 0.2f, 0.70f))
+                        .offset(+1)
+                        .blurRadius(2)
+                        .spreadRadius(0)
+                    )
+                    .shadow("bright", s -> s
+                        .color(new Color(1.0f, 1.0f, 1.0f, 0.70f))
+                        .offset(-1)
+                        .blurRadius(2)
+                        .spreadRadius(0)
+                    )
+                )
                 .onClick(it -> vm.startGame())
                 .onMouseClick( it -> it.animateOnce(2, TimeUnit.SECONDS, state -> {
                     it.paint(state, g -> {
@@ -37,5 +94,15 @@ public class MainView extends Panel{
             )
             .add("span, center", label(vm.getFeedback()))
         );
+    }
+
+    private Color determineBackgroundColorFor(JButton component) {
+        ButtonModel model = component.getModel();
+        var referenceColor = new Color(0,150,90);
+        if(model.isRollover()){
+            return Color.YELLOW;
+        }
+
+        return referenceColor;
     }
 }
