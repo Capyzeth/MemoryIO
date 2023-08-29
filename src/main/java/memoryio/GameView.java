@@ -61,7 +61,7 @@ public class GameView extends Panel {
                     p.add(
                         label(90,90,UI.findIcon(tileViewModel.getSource()).orElseThrow())
                         .withRepaintIf(tileViewModel.getRepaintEvent())
-                        .onMouseClick(it -> vm.clickedTile(finalI))
+                        .onMousePress(it -> vm.clickedTile(finalI))
                         .withStyle(it -> it
                             .painter(Layer.FOREGROUND, g -> {
                                 boolean isVisible = tiles.get(finalI).getIsVisible();

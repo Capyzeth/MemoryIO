@@ -43,6 +43,7 @@ public class GameViewModel {
     }
 
     public void clickedTile( int i ){
+        System.out.println("Clicked a Platypus! Platicounter: "+i);
         if ( first == null ){
             first = tileViewModels.get( i );
             first.setVisible( true );
