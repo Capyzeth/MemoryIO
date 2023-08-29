@@ -4,9 +4,11 @@ import sprouts.Var;
 import swingtree.UI;
 
 import javax.swing.*;
+import java.util.Optional;
 
 public class MainViewModel {
     private static final int MAX_NUMBER_OF_TILES = 24*2; //todo: read contents of the image folder and calculate accordingly
+    public static final int MIN_DIM_SIZE = 1;
 
     private final Var<Integer> width = Var.of(4).onAct(it -> validate());
     private final Var<Integer> height = Var.of(4).onAct(it -> validate());
@@ -19,7 +21,7 @@ public class MainViewModel {
 
     private void validate(){
         isPlayable = true;
-        int numberOfTiles = width.get() * height.get();
+        int numberOfTiles = Math.max(0, width.get()) * Math.max(0, height.get());
         boolean isEven = (numberOfTiles % 2 == 0);
         String problems = "";
         if(!isEven){
@@ -30,18 +32,19 @@ public class MainViewModel {
             problems += "<br>Upper limit of available tiles reached!";
             isPlayable = false;
         }
+        if (( width.get() < MIN_DIM_SIZE ) || ( height.get() < MIN_DIM_SIZE )){
+            problems += "<br>Not possible in this universe, sorry. (Negative dimensions for the board aren't valid.)";
+            isPlayable = false;
+        }
         feedback.set("<html><p style=\"color:red\">" + problems + "</p></html>");
     }
 
-    public void startGame(){
+    public Optional<GameViewModel> startGame(){
         if(this.isPlayable){
-            UI.show(f-> {
-                f.setTitle("Memory IO - " + width.get() + "x" + height.get());
-                f.setIconImage(UI.icon("/platypussies/p1.png").getImage());
-                return new GameView(new GameViewModel(width.get(), height.get()));
-            });
+            return Optional.of(new GameViewModel(width.get(), height.get()));
         }else{
             this.feedback.set("Requirements for start aren't met.");
+            return Optional.empty();
         }
     }
 }

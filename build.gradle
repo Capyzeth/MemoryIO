@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'groovy'
 }
 
 group 'org.olgames'
@@ -13,7 +14,12 @@ repositories {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
-    implementation group: 'io.github.globaltcad', name: 'swing-tree', version:'0dba32a'
+    implementation group: 'io.github.globaltcad', name: 'swing-tree', version:'0.6.0'
+    // Testing :
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    testImplementation platform('org.spockframework:spock-bom:2.1-groovy-3.0')
+    testImplementation 'org.spockframework:spock-core:2.1-groovy-3.0'
 }
 
 test {

@@ -1,4 +1,6 @@
 package memoryio;
+import swingtree.UI;
+
 import javax.swing.*;
 import java.awt.Color;
 import java.util.concurrent.TimeUnit;
@@ -7,8 +9,10 @@ import static swingtree.UI.*;
 
 public class MainView extends Panel{
     public MainView(MainViewModel vm){
-        of(this).add(
-            panel("wrap 2").withPrefSize(300,170)
+        of(this).withLayout("fill").add(
+            panel("fill, wrap 2")
+            .withPrefSize(300,170)
+            .withBackground(Color.WHITE)
             .add(
                 panel("wrap 1")
                 .withStyle(it -> it
@@ -79,7 +83,13 @@ public class MainView extends Panel{
                         .spreadRadius(0)
                     )
                 )
-                .onClick(it -> vm.startGame())
+                .onClick(it -> vm.startGame().ifPresent(game -> {
+                    UI.show(f-> {
+                        f.setTitle("Memory IO - " + game.getWidth() + "x" + game.getHeight());
+                        f.setIconImage(UI.findIcon("/platypussies/p1.png").map(i -> i.getImage()).orElse(null));
+                        return new GameView(game);
+                    });
+                }))
                 .onMouseClick( it -> it.animateOnce(2, TimeUnit.SECONDS, state -> {
                     it.paint(state, g -> {
                         g.setColor(new Color(0.1f, 0.25f, 0.5f, (float) state.fadeOut()));

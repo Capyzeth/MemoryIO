@@ -8,9 +8,11 @@ import java.util.Random;
 import static swingtree.UI.*;
 
 public class GameView extends Panel {
+    private static final int TILE_SPACING = 5;
 
     public GameView(GameViewModel vm){
-        of(this).withLayout("fill, wrap 1").withPrefSize((90 * vm.getWidth() + 120),(90 * vm.getHeight() + 140))
+        of(this).withLayout("fill, wrap 1")
+        .withPrefSize(((90 + TILE_SPACING) * vm.getWidth() + 120), ((90 + TILE_SPACING) * vm.getHeight() + 140))
         .withBackground(Color.LIGHT_GRAY)
         .add("center",
             panel("fill")
@@ -51,13 +53,14 @@ public class GameView extends Panel {
             )
             .apply(p -> {
                 var selectedCard = new Random(1 + vm.getTileViewModels().size()).nextInt(10)+1;
-                var cover = UI.icon("/cards/c" + selectedCard + ".png");
+                var cover = UI.findIcon("/cards/c" + selectedCard + ".png").orElseThrow();
                 List<TileViewModel> tiles = vm.getTileViewModels();
                 for(int i = 0; i < tiles.size(); i++){
                     int finalI = i;
                     var tileViewModel = tiles.get(i);
                     p.add(
-                        label(90,90,UI.icon(tileViewModel.getSource())).withRepaintIf(tileViewModel.getRepaintEvent())
+                        label(90,90,UI.findIcon(tileViewModel.getSource()).orElseThrow())
+                        .withRepaintIf(tileViewModel.getRepaintEvent())
                         .onMouseClick(it -> vm.clickedTile(finalI))
                         .withStyle(it -> it
                             .painter(Layer.FOREGROUND, g -> {
@@ -66,7 +69,7 @@ public class GameView extends Panel {
                                     g.drawImage(cover.getImage(),0,0, it.component().getWidth(), it.component().getHeight(),null);
                                 }
                             })
-                            .margin(5)
+                            .margin(TILE_SPACING)
                             .shadow("dark", s -> s
                                 .color(new Color(0, 0.1f, 0.2f, 0.70f))
                                 .offset(+1)
