@@ -93,10 +93,10 @@ differently shaped boards:
 
 ![game-board size 14x3 partially solved](docs/img/gameboard-14x3.png)
 
-<img href="" title="example platypus" src="docs/img/p1.png" style="float:right;width:200px;margin:0.5em;"/>
-
 ~~~
 Have fun!
 
-Here is Timmy, the platypus mascot of MemoryIO ->
+Here is Timmy, the platypus mascot of MemoryIO
 ~~~
+
+<img href="" title="example platypus" src="docs/img/p1.png" style="float:right;width:200px;margin:0.5em;"/>
