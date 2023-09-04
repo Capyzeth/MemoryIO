@@ -1,5 +1,4 @@
 package memoryio;
-import sprouts.Var;
 import swingtree.UI;
 
 import javax.swing.*;
