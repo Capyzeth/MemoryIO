@@ -5,13 +5,13 @@ import spock.lang.Specification
 class Game_Spec extends Specification{
     def 'We can create a game-board, which has the expected dimensions.'(int width, int height){
         given: "We have a game instance."
-            var main = new MainViewModel();
+            var menu = new MainMenuViewModel();
 
         when: "We tell the main ViewModel about our game-board dimensions."
-            main.width.act(width);
-            main.height.act(height);
+            menu.width.act(width);
+            menu.height.act(height);
         and: "We create a game based on the dimensions."
-            var game = main.startGame();
+            var game = menu.startGame();
 
         then: "The game exists."
             game.isPresent();
@@ -32,13 +32,13 @@ class Game_Spec extends Specification{
 
     def 'Certain dimensions are not permitted.'(int width, int height){
         given: "We have a game instance."
-            var main = new MainViewModel();
+            var menu = new MainMenuViewModel();
 
         when: "We tell the main ViewModel about our game-board dimensions."
-            main.width.act(width);
-            main.height.act(height);
+            menu.width.act(width);
+            menu.height.act(height);
         and: "We try to create a game based on the dimensions."
-            var game = main.startGame();
+            var game = menu.startGame();
 
         then: "The game does not exist."
             game.isEmpty();

@@ -1,12 +1,10 @@
 package memoryio;
 
 import sprouts.Var;
-import swingtree.UI;
 
-import javax.swing.*;
 import java.util.Optional;
 
-public class MainViewModel {
+public class MainMenuViewModel {
     private static final int MAX_NUMBER_OF_TILES = 24*2; //todo: read contents of the image folder and calculate accordingly
     public static final int MIN_DIM_SIZE = 1;
 

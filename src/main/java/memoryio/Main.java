@@ -10,7 +10,7 @@ public class Main {
             f.setTitle("Memory IO");
             f.setIconImage(UI.findIcon("/platypussies/p1.png").get().getImage());
             SwingTree.get().setEventProcessor(EventProcessor.DECOUPLED);
-            return UI.use(EventProcessor.DECOUPLED, () -> new MainView(new MainViewModel()));
+            return UI.use(EventProcessor.DECOUPLED, () -> new MainMenuView(new MainMenuViewModel()));
         });
         EventProcessor.DECOUPLED.join();
     }

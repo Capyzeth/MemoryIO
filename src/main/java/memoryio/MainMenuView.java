@@ -1,4 +1,5 @@
 package memoryio;
+import sprouts.Var;
 import swingtree.UI;
 
 import javax.swing.*;
@@ -7,13 +8,13 @@ import java.util.concurrent.TimeUnit;
 
 import static swingtree.UI.*;
 
-public class MainView extends Panel{
-    public MainView(MainViewModel vm){
+public class MainMenuView extends Panel{
+    public MainMenuView(MainMenuViewModel vm){
         of(this).withLayout("fill").add(
             panel("fill, wrap 2")
-            .withPrefSize(300,170)
+            .withPrefSize(300,220)
             .withBackground(Color.WHITE)
-            .add(
+            .add( "top",
                 panel("wrap 1")
                 .withStyle(it -> it
                     .border(2,"black")
@@ -90,7 +91,7 @@ public class MainView extends Panel{
                         return new GameView(game);
                     });
                 }))
-                .onMouseClick( it -> it.animateOnce(2, TimeUnit.SECONDS, state -> {
+                .onMouseClick( it -> it.animateFor(2, TimeUnit.SECONDS, state -> {
                     it.paint(state, g -> {
                         g.setColor(new Color(0.1f, 0.25f, 0.5f, (float) state.fadeOut()));
                         for ( int i = 0; i < 5; i++ ) {
